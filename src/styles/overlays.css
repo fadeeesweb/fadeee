@@ -1,0 +1,212 @@
+/* Toasts and emoji picker */
+
+.toast-viewport {
+  position: fixed;
+  top: calc(var(--nav-height) + 14px);
+  right: 18px;
+  z-index: 120;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: min(360px, calc(100vw - 36px));
+  pointer-events: none;
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 14px;
+  border-radius: 15px;
+  border: 1px solid var(--line);
+  background: rgba(14, 11, 13, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 22px 46px -22px rgba(0, 0, 0, 0.95);
+  pointer-events: auto;
+  animation: toast-in 0.36s cubic-bezier(0.2, 0.9, 0.3, 1.25);
+}
+
+.toast__icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.toast--success {
+  border-color: rgba(34, 197, 94, 0.45);
+}
+
+.toast--success .toast__icon {
+  background: rgba(34, 197, 94, 0.24);
+  color: #bbf7d0;
+}
+
+.toast--error {
+  border-color: rgba(255, 45, 79, 0.5);
+}
+
+.toast--error .toast__icon {
+  background: rgba(255, 45, 79, 0.24);
+  color: #ffd0d8;
+}
+
+.toast--info .toast__icon {
+  background: rgba(255, 45, 79, 0.16);
+  color: var(--red-soft);
+}
+
+.toast__message {
+  flex: 1;
+  font-size: 0.87rem;
+  line-height: 1.45;
+}
+
+.toast__close {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.toast__close:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.picker-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 130;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(3, 2, 3, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  animation: fade-in 0.22s ease;
+}
+
+.picker {
+  width: min(640px, 100%);
+  max-height: min(78vh, 720px);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 22px;
+  border-color: rgba(255, 45, 79, 0.3);
+  animation: pop-in 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+}
+
+.picker__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.picker__head h3 {
+  margin-top: 8px;
+  font-size: 1.3rem;
+}
+
+.picker__search {
+  display: flex;
+  gap: 10px;
+}
+
+.picker__search input {
+  flex: 1;
+  padding: 12px 15px;
+}
+
+.picker__tabs {
+  display: flex;
+  gap: 7px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: thin;
+}
+
+.picker__tabs button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 13px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.picker__tabs button:hover {
+  border-color: var(--line-red);
+  color: #fff;
+}
+
+.picker__tabs button.is-active {
+  background: rgba(255, 45, 79, 0.9);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 12px 24px -14px rgba(255, 45, 79, 0.95);
+}
+
+.picker__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+  gap: 7px;
+  overflow-y: auto;
+  max-height: 42vh;
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  background: rgba(8, 6, 7, 0.5);
+}
+
+.picker__grid button {
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border: 1px solid transparent;
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.04);
+  font-size: 1.55rem;
+  cursor: pointer;
+  transition: transform 0.16s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.picker__grid button:hover {
+  transform: translateY(-3px) scale(1.12);
+  background: rgba(255, 45, 79, 0.18);
+  border-color: var(--line-red);
+}
+
+.picker__grid button.is-selected {
+  background: rgba(255, 45, 79, 0.3);
+  border-color: var(--red);
+}
+
+.picker__hint {
+  color: var(--muted-dim);
+  font-size: 0.78rem;
+  text-align: center;
+}
+

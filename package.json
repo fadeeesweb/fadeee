@@ -1,0 +1,26 @@
+{
+  "name": "emoji-code",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Emoji Code - turn ordinary messages into extraordinary emoji codes. Fully local, no backend.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@fontsource/space-grotesk": "^5.1.0",
+    "qrcode": "^1.5.4",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "jsdom": "^30.1.1",
+    "vite": "^5.4.11",
+    "vitest": "^2.1.8"
+  }
+}
