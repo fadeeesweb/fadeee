@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { encodeMessage } from '../lib/codec.js';
-import funny1 from '../assets/floaters/funny-1.jpg';
-import funny2 from '../assets/floaters/funny-2.jpg';
-import funny3 from '../assets/floaters/funny-3.jpg';
-import funny4 from '../assets/floaters/funny-4.jpg';
-import funny5 from '../assets/floaters/funny-5.jpg';
-import funny6 from '../assets/floaters/funny-6.jpg';
+import funny1 from '../assets/floaters/funny-1.webp';
+import funny2 from '../assets/floaters/funny-2.webp';
+import funny3 from '../assets/floaters/funny-3.webp';
+import funny4 from '../assets/floaters/funny-4.webp';
+import funny5 from '../assets/floaters/funny-5.webp';
+import funny6 from '../assets/floaters/funny-6.webp';
 
 const DEMO_TEXTS = ['Hello World', 'Meet me at 8', 'You are invited 🎉'];
 const FLOATERS = [funny1, funny2, funny3, funny4, funny5, funny6];
