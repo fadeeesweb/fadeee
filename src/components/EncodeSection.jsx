@@ -90,7 +90,7 @@ export default function EncodeSection({ open, onOpen }) {
         }),
         delay(430),
       ]);
-      setResult(encoded);
+      setResult({ ...encoded, text });
       setPreviewTarget(encoded.expiry || 0);
       toast.push('Emoji Code generated.', 'success');
       setBurst(
@@ -158,7 +158,7 @@ export default function EncodeSection({ open, onOpen }) {
         hours,
         minutes,
       });
-      setResult(encoded);
+      setResult({ ...encoded, text });
       toast.push(`Regenerated with theme: ${THEME_NAMES[next]}`, 'success');
     } catch (error) {
       toast.push(error && error.message ? error.message : 'Unable to regenerate.', 'error');
@@ -226,13 +226,13 @@ export default function EncodeSection({ open, onOpen }) {
   useEffect(() => {
     if (!showQr || !result || !canvasRef.current) return undefined;
     let cancelled = false;
-    QRCode.toCanvas(canvasRef.current, result.code, {
+    QRCode.toCanvas(canvasRef.current, result.text || '', {
       width: 260,
       margin: 2,
       errorCorrectionLevel: 'L',
       color: { dark: '#0b0b0d', light: '#ffffff' },
     }).catch(() => {
-      if (!cancelled) setQrError('This code is too long to fit in a QR code.');
+      if (!cancelled) setQrError('This message is too long to fit in a QR code.');
     });
     return () => {
       cancelled = true;
@@ -598,7 +598,7 @@ export default function EncodeSection({ open, onOpen }) {
                         📷
                       </div>
                     ) : (
-                      <canvas ref={canvasRef} className="qr-panel__canvas" aria-label="QR code for this emoji code" />
+                      <canvas ref={canvasRef} className="qr-panel__canvas" aria-label="QR code with your original message" />
                     )}
                     <div className="qr-panel__actions">
                       {!qrError ? (
@@ -622,7 +622,9 @@ export default function EncodeSection({ open, onOpen }) {
                         {qrError}
                       </p>
                     ) : (
-                      <p className="hint">Generated in your browser. Scan it to read the code.</p>
+                      <p className="hint">
+                        Scan with any phone camera to read your original message directly.
+                      </p>
                     )}
                   </div>
                 ) : null}
