@@ -77,6 +77,9 @@ export default function App() {
   const openSection = useCallback((name) => {
     if (name !== 'encode' && name !== 'decode') return;
     setOpened((previous) => (previous[name] ? previous : { ...previous, [name]: true }));
+    if (window.location.hash !== `#${name}`) {
+      window.history.replaceState(null, '', `#${name}`);
+    }
     window.setTimeout(() => {
       const target = document.getElementById(name);
       if (target && typeof target.scrollIntoView === 'function') {
@@ -84,6 +87,17 @@ export default function App() {
       }
     }, 90);
   }, []);
+
+  // Deep links: /#encode and /#decode open the section automatically.
+  useEffect(() => {
+    const applyHash = () => {
+      const hash = window.location.hash.replace('#', '');
+      if (hash === 'encode' || hash === 'decode') openSection(hash);
+    };
+    applyHash();
+    window.addEventListener('hashchange', applyHash);
+    return () => window.removeEventListener('hashchange', applyHash);
+  }, [openSection]);
 
   return (
     <ToastProvider>

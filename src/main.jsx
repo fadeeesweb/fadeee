@@ -10,6 +10,7 @@ import './styles/overlays.css';
 import './styles/layout.css';
 import './styles/sections.css';
 import './styles/animations.css';
+import './styles/mobile.css';
 import App from './App.jsx';
 import ErrorBoundary from './components/ErrorBoundary.jsx';
 

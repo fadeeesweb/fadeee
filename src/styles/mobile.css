@@ -1,0 +1,146 @@
+/* Phone-first overrides — loaded last so they win over the base rules. */
+
+@media (max-width: 640px) {
+  .navbar__inner {
+    width: min(1180px, 100% - 24px);
+    gap: 12px;
+  }
+
+  .navbar__title {
+    font-size: 1rem;
+  }
+
+  .navbar__toggle {
+    min-width: 46px;
+    min-height: 46px;
+  }
+
+  .hero {
+    padding-top: calc(var(--nav-height) + 26px);
+    padding-bottom: 56px;
+  }
+
+  .hero__title {
+    margin: 16px 0 14px;
+    font-size: clamp(2.7rem, 13vw, 3.8rem);
+  }
+
+  .hero__subtitle {
+    font-size: 1.05rem;
+    max-width: none;
+  }
+
+  .hero__floaters {
+    display: none;
+  }
+
+  .hero__actions {
+    width: 100%;
+    gap: 12px;
+  }
+
+  .hero__actions .btn {
+    width: 100%;
+    min-height: 52px;
+    justify-content: center;
+  }
+
+  .eyebrow {
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    padding: 7px 12px;
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .section {
+    padding: clamp(52px, 12vw, 80px) 0;
+  }
+
+  .section-gate {
+    padding: 30px 20px;
+  }
+
+  .section-gate p {
+    font-size: 0.95rem;
+  }
+
+  .section-gate .btn {
+    width: 100%;
+    min-height: 52px;
+    justify-content: center;
+  }
+
+  .card {
+    padding: 18px;
+  }
+
+  .btn {
+    min-height: 46px;
+  }
+
+  .btn--lg,
+  .btn--xl {
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+
+  .segmented button {
+    min-height: 46px;
+    flex: 1;
+  }
+
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+
+  .code-box {
+    padding: 16px;
+  }
+
+  .code-box__text {
+    font-size: 1.05rem;
+    max-height: 220px;
+  }
+
+  .decoded-box {
+    padding: 16px;
+    font-size: 1rem;
+  }
+
+  .result-meta {
+    gap: 8px;
+    font-size: 0.82rem;
+  }
+
+  .toast-viewport {
+    left: 12px;
+    right: 12px;
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+@media (max-width: 480px) {
+  .btn-row {
+    gap: 10px;
+  }
+
+  .btn-row .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .time-fields {
+    width: 100%;
+  }
+
+  .time-field input {
+    width: 100%;
+  }
+
+  .demo-card {
+    padding: 18px 16px;
+  }
+}
