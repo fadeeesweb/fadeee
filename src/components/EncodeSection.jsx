@@ -607,7 +607,7 @@ export default function EncodeSection({ open, onOpen }) {
                         📷
                       </div>
                     ) : (
-                      <canvas ref={canvasRef} className="qr-panel__canvas" aria-label="QR code with your original message" />
+                      <canvas ref={canvasRef} className="qr-panel__canvas" aria-label="QR code linking to the Emoji Code decoder" />
                     )}
                     <div className="qr-panel__actions">
                       {!qrError ? (

@@ -20,9 +20,9 @@ and expiration timers all run inside your browser.
 - **24-hour auto-expiry** — every code expires exactly 24 hours after it is created. A custom timer (max
   24 hours) is stored in the code itself, with live countdowns and an unmistakable
   "THIS MESSAGE HAS EXPIRED" state. Codes are plain emoji — anyone can decode them, no account needed.
-- **Extras** — QR code that carries your **original message** (scan with any phone camera and read it
-  directly, no app needed), native share sheet with clipboard fallback, toasts, keyboard
-  shortcuts. Nothing is ever stored.
+- **Extras** — QR code that carries a **link to this site's decoder**: scanning it opens the website
+  and shows the decoded message automatically (no typing, no app needed), native share sheet with
+  clipboard fallback, toasts, keyboard shortcuts. Nothing is ever stored.
 - **Button-first layout** — the encoder and decoder start closed. "Start Encoding" / "Decode Message"
   (hero, navbar, footer) or the section's own button opens one and scrolls to it.
 - **Premium design** — red-black glassmorphism, animated particle background, floating hero title,
