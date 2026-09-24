@@ -91,7 +91,7 @@ export default function App() {
   // Deep links: /#encode and /#decode open the section automatically.
   useEffect(() => {
     const applyHash = () => {
-      const hash = window.location.hash.replace('#', '');
+      const hash = window.location.hash.replace('#', '').split('?')[0];
       if (hash === 'encode' || hash === 'decode') openSection(hash);
     };
     applyHash();

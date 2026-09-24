@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { decodeMessage } from '../lib/codec.js';
+import { base64UrlToBytes, bytesToStr } from '../lib/bytes.js';
 import { copyText, readClipboardText } from '../lib/clipboard.js';
 import { THEME_NAMES } from '../lib/pools.js';
 import { formatDuration } from '../lib/format.js';
@@ -17,35 +18,76 @@ export default function DecodeSection({ open, onOpen }) {
   const [busy, setBusy] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  const handleDecode = useCallback(async () => {
-    if (busy) return;
-    if (code.trim().length === 0) {
-      toast.push('Please paste an Emoji Code to decode.', 'error');
-      return;
-    }
-    setBusy(true);
-    try {
-      const [decoded] = await Promise.all([decodeMessage(code), delay(380)]);
-      setResult(decoded);
-      if (decoded.ok) {
-        if (decoded.expired) {
-          toast.push('This message has expired.', 'error', 4200);
-        } else {
-          toast.push('Message decoded.', 'success');
-        }
-      } else {
-        toast.push(decoded.message, 'error', 4200);
+  const runDecode = useCallback(
+    async (value) => {
+      if (busy) return;
+      if (typeof value !== 'string' || value.trim().length === 0) {
+        toast.push('Please paste an Emoji Code to decode.', 'error');
+        return;
       }
-    } catch (error) {
-      setResult({
-        ok: false,
-        message: 'Unable to decode this message. Make sure the emoji code was created by Emoji Code.',
-      });
-      toast.push('Unable to decode this message.', 'error');
-    } finally {
-      setBusy(false);
-    }
-  }, [busy, code, toast]);
+      setBusy(true);
+      try {
+        const [decoded] = await Promise.all([decodeMessage(value), delay(380)]);
+        setResult(decoded);
+        if (decoded.ok) {
+          if (decoded.expired) {
+            toast.push('This message has expired.', 'error', 4200);
+          } else {
+            toast.push('Message decoded.', 'success');
+          }
+        } else {
+          toast.push(decoded.message, 'error', 4200);
+        }
+      } catch (error) {
+        setResult({
+          ok: false,
+          message: 'Unable to decode this message. Make sure the emoji code was created by Emoji Code.',
+        });
+        toast.push('Unable to decode this message.', 'error');
+      } finally {
+        setBusy(false);
+      }
+    },
+    [busy, toast]
+  );
+
+  const runRef = useRef(runDecode);
+  runRef.current = runDecode;
+
+  const handleDecode = useCallback(() => runDecode(code), [runDecode, code]);
+
+  // QR / deep link: /#decode?c=<base64url(code)> opens the decoder and decodes automatically.
+  const seenParam = useRef('');
+  useEffect(() => {
+    const apply = async () => {
+      const raw = window.location.hash.replace('#', '');
+      if (!raw.startsWith('decode')) return;
+      const queryIndex = raw.indexOf('?');
+      if (queryIndex === -1) return;
+      let param = '';
+      try {
+        param = new URLSearchParams(raw.slice(queryIndex + 1)).get('c') || '';
+      } catch (error) {
+        param = '';
+      }
+      if (!param || seenParam.current === param) return;
+      seenParam.current = param;
+      let incoming = '';
+      try {
+        incoming = bytesToStr(base64UrlToBytes(param));
+      } catch (error) {
+        incoming = '';
+      }
+      if (!incoming) return;
+      setCode(incoming);
+      setResult(null);
+      setCopied(false);
+      await runRef.current(incoming);
+    };
+    apply();
+    window.addEventListener('hashchange', apply);
+    return () => window.removeEventListener('hashchange', apply);
+  }, []);
 
   const handleCopy = useCallback(async () => {
     if (!result || !result.ok || result.expired) return;

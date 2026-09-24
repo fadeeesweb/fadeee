@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import QRCode from 'qrcode';
 import { encodeMessage, getSpacer, validateExpiration, MAX_TEXT_LENGTH, DEFAULT_EXPIRY_MS } from '../lib/codec.js';
+import { bytesToBase64Url, strToBytes } from '../lib/bytes.js';
 import { THEME_ICONS, THEME_NAMES } from '../lib/pools.js';
 import { copyText, shareText, readClipboardText } from '../lib/clipboard.js';
 import { useToast } from './Toasts.jsx';
@@ -8,6 +9,14 @@ import EmojiPicker from './EmojiPicker.jsx';
 import Countdown from './Countdown.jsx';
 
 const delay = (ms) => new Promise((resolve) => window.setTimeout(resolve, ms));
+
+function buildShareLink(code) {
+  const rawPath = window.location.pathname.endsWith('/')
+    ? window.location.pathname
+    : `${window.location.pathname}/`;
+  const base = `${window.location.origin}${rawPath}`;
+  return `${base}#decode?c=${bytesToBase64Url(strToBytes(code))}`;
+}
 
 export default function EncodeSection({ open, onOpen }) {
   const toast = useToast();
@@ -226,13 +235,13 @@ export default function EncodeSection({ open, onOpen }) {
   useEffect(() => {
     if (!showQr || !result || !canvasRef.current) return undefined;
     let cancelled = false;
-    QRCode.toCanvas(canvasRef.current, result.text || '', {
-      width: 260,
+    QRCode.toCanvas(canvasRef.current, buildShareLink(result.code), {
+      width: 480,
       margin: 2,
       errorCorrectionLevel: 'L',
       color: { dark: '#0b0b0d', light: '#ffffff' },
     }).catch(() => {
-      if (!cancelled) setQrError('This message is too long to fit in a QR code.');
+      if (!cancelled) setQrError('This message is too long to share by QR. Use Copy Code instead.');
     });
     return () => {
       cancelled = true;
@@ -623,7 +632,7 @@ export default function EncodeSection({ open, onOpen }) {
                       </p>
                     ) : (
                       <p className="hint">
-                        Scan with any phone camera to read your original message directly.
+                        Scan to open this site in the decoder — the message appears automatically.
                       </p>
                     )}
                   </div>
