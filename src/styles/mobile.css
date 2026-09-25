@@ -31,9 +31,12 @@
     font-size: 1.15rem;
   }
 
-  /* moon looks odd mid-screen behind stacked phone sections — hero-only vibe */
+  /* red moon: fixed and centred like desktop — stays on screen while scrolling */
   .spide-deco {
-    display: none;
+    display: block;
+    position: fixed;
+    top: 50%;
+    transform: translate(-50%, -50%);
   }
 
   .navbar__toggle {
@@ -389,17 +392,26 @@
   }
 
   /* ---------- meme floaters: a few at the edges, never over text ---------- */
-  .hero__floaters {
-    opacity: 0.5;
-  }
-
   .hero__floater {
     width: clamp(26px, 7vw, 40px);
+    opacity: 0.45;
   }
 
   .hero__floater--4,
   .hero__floater--8 {
     width: clamp(34px, 9vw, 54px);
+    opacity: 0.6;
+  }
+
+  .hero__floater--2 {
+    top: 17%; /* sits in the clean gap between title and subtitle, clear of the buttons */
+    right: 4%;
+  }
+
+  .floater-hint {
+    width: 80px;
+    top: calc(17% + 21px);
+    right: calc(4% + 34px);
   }
 
   .hero__floater--3,

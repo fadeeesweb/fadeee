@@ -53,7 +53,7 @@ export default function Hero({ onOpen }) {
       className="hero"
       id="home"
       onClick={(event) => {
-        if (event.target.closest('button, a, input, textarea, select, label')) return;
+        if (event.target.closest('button, a, input, textarea, select, label, .floater-hint')) return;
         const selection = window.getSelection ? String(window.getSelection()) : '';
         if (selection) return;
         const x = event.clientX;
@@ -76,6 +76,38 @@ export default function Hero({ onOpen }) {
             <img src={floaterSrc} alt="" />
           </span>
         ))}
+        <span className="floater-hint">
+          <span className="floater-hint__body">
+            <svg viewBox="0 0 106 52" aria-hidden="true">
+              <defs>
+                <linearGradient
+                  id="hintGrad"
+                  gradientUnits="userSpaceOnUse"
+                  x1="0"
+                  y1="0"
+                  x2="53"
+                  y2="0"
+                  spreadMethod="repeat"
+                >
+                  <stop offset="0" stopColor="#e60000" />
+                  <stop offset="1" stopColor="#ffffff" />
+                  <animateTransform
+                    attributeName="gradientTransform"
+                    type="translate"
+                    from="0 0"
+                    to="53 0"
+                    dur="3.5s"
+                    repeatCount="indefinite"
+                  />
+                </linearGradient>
+              </defs>
+              <text x="1" y="21">click</text>
+              <text x="1" y="44">here</text>
+              <path className="floater-hint__line" d="M58 43 Q 80 42 99 28" />
+              <path className="floater-hint__head" d="M95 36 L 100 27 L 90 27" />
+            </svg>
+          </span>
+        </span>
       </div>
       <audio
         ref={audioRef}

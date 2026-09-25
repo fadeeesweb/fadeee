@@ -104,6 +104,36 @@
   }
 }
 
+@keyframes btn-float-up {
+  0%,
+  100% {
+    translate: 0 0;
+    rotate: -0.6deg;
+  }
+  50% {
+    translate: 0 -24px;
+    rotate: 1deg;
+  }
+}
+
+@keyframes btn-float-down {
+  0%,
+  100% {
+    translate: 0 0;
+    rotate: 0.6deg;
+  }
+  50% {
+    translate: 0 12px;
+    rotate: -1deg;
+  }
+}
+
+/* demo card: same gentle float as the EMOJI CODE title (phase-shifted) */
+.float-slow {
+  animation: title-float 4.6s 0.9s ease-in-out infinite;
+  will-change: transform;
+}
+
 @keyframes title-glow {
   0%,
   100% {
