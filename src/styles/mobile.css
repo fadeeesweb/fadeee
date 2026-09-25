@@ -1,35 +1,325 @@
-/* Phone-first overrides — loaded last so they win over the base rules. */
+/* Phone-first design pass — loaded last so these win over the base rules.
+   Same components as desktop, re-tuned for thumbs: unified 16px gutters,
+   bigger touch targets, clearer type hierarchy, floating glass menu. */
 
 @media (max-width: 640px) {
+  /* ---------- unified page gutters (everything aligns to 16px) ---------- */
+  .container {
+    width: min(1180px, 100% - 32px);
+  }
+
   .navbar__inner {
-    width: min(1180px, 100% - 24px);
+    width: min(1180px, 100% - 32px);
     gap: 12px;
   }
 
+  /* ---------- sticky header never clips jump targets ---------- */
+  .section {
+    scroll-margin-top: calc(var(--nav-height) + 16px);
+  }
+
+  .section-gate,
+  .card,
+  .code-box,
+  .decoded-box,
+  .hero textarea {
+    scroll-margin-top: calc(var(--nav-height) + 76px);
+  }
+
+  /* ---------- navbar ---------- */
   .navbar__title {
     font-size: 1.15rem;
   }
 
   .navbar__toggle {
-    min-width: 46px;
-    min-height: 46px;
+    min-width: 48px;
+    min-height: 48px;
+    border-radius: 14px;
   }
 
+  /* floating glass menu card instead of a full-bleed slab */
+  .navbar__menu {
+    top: calc(var(--nav-height) + 8px);
+    left: 12px;
+    right: 12px;
+    gap: 6px;
+    padding: 10px;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    background: rgba(15, 10, 12, 0.94);
+    box-shadow: 0 26px 60px rgba(0, 0, 0, 0.6);
+  }
+
+  .navbar__menu a {
+    display: flex;
+    align-items: center;
+    min-height: 48px;
+    padding: 13px 16px;
+    border-radius: 13px;
+    font-size: 1rem;
+  }
+
+  .navbar__menu a.is-active {
+    background: rgba(255, 45, 79, 0.14);
+  }
+
+  .navbar__cta {
+    min-height: 52px;
+    margin-top: 4px;
+    border-radius: 14px;
+  }
+
+  /* ---------- hero: clearer hierarchy, thumb-sized actions ---------- */
   .hero {
-    padding-top: calc(var(--nav-height) + 26px);
-    padding-bottom: 56px;
+    padding-top: calc(var(--nav-height) + 30px);
+    padding-bottom: 64px;
   }
 
   .hero__title {
-    margin: 16px 0 14px;
-    font-size: clamp(2.7rem, 13vw, 3.8rem);
+    margin: 18px 0 14px;
+    font-size: clamp(2.9rem, 14vw, 4rem);
   }
 
   .hero__subtitle {
-    font-size: 1.05rem;
+    font-size: 1.08rem;
     max-width: none;
   }
 
+  .eyebrow {
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    padding: 7px 12px;
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .hero__actions {
+    width: 100%;
+    gap: 12px;
+    margin-top: 22px;
+  }
+
+  .hero__actions .btn {
+    width: 100%;
+    min-height: 54px;
+    justify-content: center;
+    font-size: 1rem;
+  }
+
+  .hero__actions .btn--primary {
+    box-shadow: 0 16px 36px rgba(255, 45, 79, 0.35);
+  }
+
+  .hero__note {
+    font-size: 0.92rem;
+    line-height: 1.6;
+  }
+
+  /* ---------- demo card: compact sample ---------- */
+  .demo-card {
+    padding: 18px 16px;
+    transform: rotate(-0.6deg);
+  }
+
+  .demo-card__head {
+    margin-bottom: 14px;
+  }
+
+  .demo-step {
+    padding: 12px 14px;
+  }
+
+  .demo-step__value {
+    font-size: 0.95rem;
+  }
+
+  .demo-step__value--code {
+    font-size: 1.05rem;
+    line-height: 1.65;
+  }
+
+  .demo-arrow {
+    padding: 5px 0;
+  }
+
+  .demo-card__dots {
+    margin-top: 14px;
+  }
+
+  /* ---------- sections: less dead space, content arrives sooner ---------- */
+  .section {
+    padding: clamp(48px, 11vw, 74px) 0;
+  }
+
+  .section-head {
+    margin-bottom: 26px;
+  }
+
+  .section-head h2 {
+    font-size: clamp(1.7rem, 8vw, 2.25rem);
+    margin: 10px 0;
+  }
+
+  .section-head h2::after {
+    width: 60px;
+    margin-top: 14px;
+  }
+
+  .section-head p {
+    font-size: 1rem;
+  }
+
+  /* ---------- gate cards: one obvious action ---------- */
+  .section-gate {
+    padding: 30px 20px;
+  }
+
+  .section-gate h2 {
+    margin: 14px 0 10px;
+    font-size: clamp(1.6rem, 7vw, 2rem);
+  }
+
+  .section-gate p {
+    font-size: 1rem;
+    margin-bottom: 22px;
+  }
+
+  .section-gate .btn {
+    width: 100%;
+    min-height: 54px;
+    justify-content: center;
+    font-size: 1rem;
+  }
+
+  /* ---------- cards, forms, buttons ---------- */
+  .card {
+    padding: 18px;
+  }
+
+  .card__head {
+    margin-bottom: 14px;
+  }
+
+  .btn {
+    min-height: 48px;
+  }
+
+  .btn--lg,
+  .btn--xl {
+    min-height: 54px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+
+  .btn-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .btn-row .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .segmented button {
+    min-height: 48px;
+    flex: 1;
+    font-size: 0.95rem;
+  }
+
+  input,
+  select,
+  textarea {
+    font-size: 16px; /* stops iOS Safari from zooming into fields */
+  }
+
+  #encode textarea,
+  #decode textarea {
+    min-height: 112px;
+    max-height: 36vh;
+  }
+
+  .field-group > label,
+  .field-group > legend,
+  .emoji-slot__label {
+    font-size: 0.9rem;
+  }
+
+  .time-fields {
+    width: 100%;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .time-field input {
+    width: 100%;
+  }
+
+  .emoji-slots {
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .emoji-slot__button {
+    min-height: 52px;
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* ---------- readable utility text (size + contrast) ---------- */
+  .hint {
+    font-size: 0.92rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .field-error {
+    font-size: 0.9rem;
+  }
+
+  .counter {
+    font-size: 0.8rem;
+  }
+
+  /* ---------- results ---------- */
+  .code-box {
+    padding: 16px;
+  }
+
+  .code-box__text {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    max-height: 240px;
+  }
+
+  .decoded-box {
+    padding: 16px;
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+
+  .result-meta {
+    gap: 8px;
+    font-size: 0.84rem;
+    flex-wrap: wrap;
+  }
+
+  /* emoji-safe rendering — never show empty tofu boxes */
+  .code-box__text,
+  .decoded-box,
+  .demo-step__value,
+  .counter {
+    font-family: var(--mono), 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji';
+  }
+
+  /* ---------- toast ---------- */
+  .toast-viewport {
+    left: 12px;
+    right: 12px;
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  }
+
+  /* ---------- meme floaters: visible, but gentle behind text ---------- */
   .hero__floaters {
     opacity: 0.6;
   }
@@ -43,113 +333,21 @@
     width: clamp(34px, 9vw, 54px);
   }
 
-  .hero__actions {
-    width: 100%;
-    gap: 12px;
+  /* ---------- footer ---------- */
+  .footer {
+    padding: 44px 0 calc(30px + env(safe-area-inset-bottom, 0px));
   }
 
-  .hero__actions .btn {
-    width: 100%;
-    min-height: 52px;
-    justify-content: center;
-  }
-
-  .eyebrow {
-    font-size: 0.66rem;
-    letter-spacing: 0.1em;
-    padding: 7px 12px;
-    max-width: 100%;
-    text-align: center;
-  }
-
-  .section {
-    padding: clamp(52px, 12vw, 80px) 0;
-  }
-
-  .section-gate {
-    padding: 30px 20px;
-  }
-
-  .section-gate p {
-    font-size: 0.95rem;
-  }
-
-  .section-gate .btn {
-    width: 100%;
-    min-height: 52px;
-    justify-content: center;
-  }
-
-  .card {
-    padding: 18px;
-  }
-
-  .btn {
-    min-height: 46px;
-  }
-
-  .btn--lg,
-  .btn--xl {
-    padding-top: 15px;
-    padding-bottom: 15px;
-  }
-
-  .segmented button {
-    min-height: 46px;
-    flex: 1;
-  }
-
-  input,
-  select,
-  textarea {
-    font-size: 16px;
-  }
-
-  .code-box {
-    padding: 16px;
-  }
-
-  .code-box__text {
-    font-size: 1.05rem;
-    max-height: 220px;
-  }
-
-  .decoded-box {
-    padding: 16px;
-    font-size: 1rem;
-  }
-
-  .result-meta {
-    gap: 8px;
-    font-size: 0.82rem;
-  }
-
-  .toast-viewport {
-    left: 12px;
-    right: 12px;
-    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  .footer__links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-size: 0.98rem;
   }
 }
 
 @media (max-width: 480px) {
   .btn-row {
     gap: 10px;
-  }
-
-  .btn-row .btn {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .time-fields {
-    width: 100%;
-  }
-
-  .time-field input {
-    width: 100%;
-  }
-
-  .demo-card {
-    padding: 18px 16px;
   }
 }
