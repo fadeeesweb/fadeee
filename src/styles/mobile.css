@@ -31,8 +31,9 @@
     font-size: 1.15rem;
   }
 
-  .navbar__spide {
-    width: 27px;
+  .spide-deco {
+    width: clamp(124px, 34vw, 170px);
+    opacity: 0.78;
   }
 
   .navbar__toggle {

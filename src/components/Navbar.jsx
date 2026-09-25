@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import spide from '../assets/spidee.webp';
 
 const LINKS = [
   { id: 'home', label: 'Home' },
@@ -65,7 +64,6 @@ export default function Navbar({ onOpen }) {
           <span className="navbar__title">
             Emoji <span>Code</span>
           </span>
-          <img className="navbar__spide" src={spide} alt="" aria-hidden="true" />
         </a>
 
         <button

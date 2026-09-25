@@ -7,6 +7,7 @@ import HowItWorks from './components/HowItWorks.jsx';
 import PrivacySection from './components/PrivacySection.jsx';
 import Footer from './components/Footer.jsx';
 import Particles from './components/Particles.jsx';
+import spide from './assets/spidee.webp';
 import { ToastProvider } from './components/Toasts.jsx';
 
 function useRevealOnScroll() {
@@ -105,6 +106,7 @@ export default function App() {
         Skip to content
       </a>
       <Particles />
+      <img className="spide-deco" src={spide} alt="" aria-hidden="true" />
       <Navbar onOpen={openSection} />
       <main id="main">
         <Hero onOpen={openSection} />
