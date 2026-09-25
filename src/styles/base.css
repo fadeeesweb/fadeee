@@ -43,14 +43,9 @@
   --red-glow: rgba(255, 45, 79, 0.35);
   --rgb-gradient: linear-gradient(
     90deg,
-    #ff2d4f 0%,
-    #ff8a1f 14%,
-    #ffe14d 28%,
-    #35e06a 42%,
-    #22d3ee 56%,
-    #4d7cff 70%,
-    #b14bff 86%,
-    #ff2d4f 100%
+    #e60000 0%,
+    #ffffff 50%,
+    #e60000 100%
   );
   --glass: rgba(255, 255, 255, 0.05);
   --glass-strong: rgba(255, 255, 255, 0.075);

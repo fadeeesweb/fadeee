@@ -1,19 +1,30 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { encodeMessage } from '../lib/codec.js';
-import funny1 from '../assets/floaters/funny-1.webp';
-import funny2 from '../assets/floaters/funny-2.webp';
-import funny3 from '../assets/floaters/funny-3.webp';
-import funny4 from '../assets/floaters/funny-4.webp';
-import funny5 from '../assets/floaters/funny-5.webp';
-import funny6 from '../assets/floaters/funny-6.webp';
+import floaterSrc from '../assets/floaters/floater.webp';
+import floaterAudio from '../assets/floaters/floater-audio.m4a';
 
 const DEMO_TEXTS = ['Hello World', 'Meet me at 8', 'You are invited 🎉'];
-const FLOATERS = [funny1, funny2, funny3, funny4, funny5, funny6];
 const FLOATER_COUNT = 8;
 
 export default function Hero({ onOpen }) {
   const [codes, setCodes] = useState([]);
   const [index, setIndex] = useState(0);
+  const [soundOn, setSoundOn] = useState(false);
+  const audioRef = useRef(null);
+
+  const toggleSound = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    if (soundOn) {
+      audio.pause();
+      audio.currentTime = 0;
+      setSoundOn(false);
+    } else {
+      audio.currentTime = 0;
+      audio.play().catch(() => {});
+      setSoundOn(true);
+    }
+  };
 
   useEffect(() => {
     let cancelled = false;
@@ -38,18 +49,40 @@ export default function Hero({ onOpen }) {
   const code = codes[index] ?? '';
 
   return (
-    <section className="hero" id="home">
-      <div className="hero__floaters" aria-hidden="true">
+    <section
+      className="hero"
+      id="home"
+      onClick={(event) => {
+        if (event.target.closest('button, a, input, textarea, select, label')) return;
+        const selection = window.getSelection ? String(window.getSelection()) : '';
+        if (selection) return;
+        const x = event.clientX;
+        const y = event.clientY;
+        const onFloater = Array.from(event.currentTarget.querySelectorAll('.hero__floater')).some((el) => {
+          const r = el.getBoundingClientRect();
+          if (r.width === 0 || r.height === 0) return false;
+          return x >= r.left && x <= r.right && y >= r.top && y <= r.bottom;
+        });
+        if (onFloater) toggleSound();
+      }}
+    >
+      <div className={`hero__floaters${soundOn ? ' is-sound-on' : ''}`} aria-hidden="true">
         {Array.from({ length: FLOATER_COUNT }, (_, position) => (
           <span
             key={position}
             className={`hero__floater hero__floater--${position + 1}`}
             style={{ animationDelay: `${position * 0.75}s` }}
           >
-            <img src={FLOATERS[position % FLOATERS.length]} alt="" />
+            <img src={floaterSrc} alt="" />
           </span>
         ))}
       </div>
+      <audio
+        ref={audioRef}
+        src={floaterAudio}
+        preload="auto"
+        onEnded={() => setSoundOn(false)}
+      />
 
       <div className="container hero__inner">
         <div className="hero__copy reveal">

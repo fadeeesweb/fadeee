@@ -282,6 +282,7 @@
     top: var(--nav-height);
     left: 0;
     right: 0;
+    z-index: 100;
     flex-direction: column;
     align-items: stretch;
     gap: 8px;
@@ -320,7 +321,14 @@
   .navbar__backdrop {
     display: block;
     position: fixed;
-    inset: var(--nav-height) 0 0;
+    top: var(--nav-height);
+    left: 0;
+    right: 0;
+    height: calc(100vh - var(--nav-height));
+    padding: 0;
+    border: 0;
+    appearance: none;
+    -webkit-appearance: none;
     z-index: 99;
     background: rgba(0, 0, 0, 0.55);
     animation: fade-in 0.25s ease;
