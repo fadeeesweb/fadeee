@@ -33,7 +33,8 @@
 
   .spide-deco {
     width: clamp(160px, 46vw, 230px);
-    opacity: 0.65;
+    opacity: 0.75;
+    border-radius: 14px 14px 0 0;
   }
 
   .navbar__toggle {

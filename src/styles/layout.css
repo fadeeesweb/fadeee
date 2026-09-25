@@ -52,7 +52,7 @@
   filter: drop-shadow(0 6px 16px rgba(255, 45, 79, 0.5));
 }
 
-/* Big Spider-Man cutout, dead-center behind content, standing on the bottom edge. */
+/* Animated GIF card, dead-center bottom, behind all content. */
 .spide-deco {
   position: fixed;
   left: 50%;
@@ -62,8 +62,12 @@
   height: auto;
   z-index: 1;
   pointer-events: none;
-  opacity: 0.85;
-  filter: drop-shadow(0 18px 46px rgba(255, 45, 79, 0.35));
+  opacity: 0.9;
+  background: #000;
+  border: 1px solid rgba(255, 45, 79, 0.5);
+  border-bottom: none;
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0 0 42px rgba(255, 45, 79, 0.35), 0 -12px 44px rgba(0, 0, 0, 0.55);
 }
 
 .navbar__title {
@@ -234,6 +238,7 @@
   font-size: 0.85rem;
   border-left: 2px solid var(--line-red);
   padding-left: 14px;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.9), 0 0 3px rgba(0, 0, 0, 0.8);
 }
 
 .demo-card {
@@ -390,6 +395,7 @@
   font-size: 0.7rem;
   letter-spacing: 0.24em;
   text-transform: uppercase;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.9), 0 0 3px rgba(0, 0, 0, 0.8);
 }
 
 .hero__scroll i {
