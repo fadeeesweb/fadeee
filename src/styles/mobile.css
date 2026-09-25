@@ -31,7 +31,16 @@
   }
 
   .hero__floaters {
-    display: none;
+    opacity: 0.6;
+  }
+
+  .hero__floater {
+    width: clamp(26px, 7vw, 40px);
+  }
+
+  .hero__floater--4,
+  .hero__floater--8 {
+    width: clamp(34px, 9vw, 54px);
   }
 
   .hero__actions {
