@@ -31,6 +31,10 @@
     font-size: 1.15rem;
   }
 
+  .navbar__spide {
+    width: 27px;
+  }
+
   .navbar__toggle {
     min-width: 48px;
     min-height: 48px;

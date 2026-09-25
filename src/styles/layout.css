@@ -52,6 +52,20 @@
   filter: drop-shadow(0 6px 16px rgba(255, 45, 79, 0.5));
 }
 
+.navbar__spide {
+  display: block;
+  width: 34px;
+  height: auto;
+  margin-left: 2px;
+  transform: rotate(10deg);
+  filter: drop-shadow(0 5px 12px rgba(255, 45, 79, 0.45));
+  transition: transform 0.25s ease;
+}
+
+.navbar__brand:hover .navbar__spide {
+  transform: rotate(-8deg) scale(1.1);
+}
+
 .navbar__title {
   font-family: 'Anton', var(--font);
   font-size: 1.35rem;
