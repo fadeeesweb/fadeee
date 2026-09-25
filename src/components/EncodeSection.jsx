@@ -10,6 +10,40 @@ import Countdown from './Countdown.jsx';
 
 const delay = (ms) => new Promise((resolve) => window.setTimeout(resolve, ms));
 
+function scrollToElTop(node) {
+  if (!node) return;
+  const docTop = () => {
+    let top = 0;
+    let el = node;
+    while (el) {
+      top += el.offsetTop;
+      el = el.offsetParent;
+    }
+    return top;
+  };
+  const navOffset = () => {
+    const navbar = document.querySelector('.navbar');
+    return (navbar ? navbar.getBoundingClientRect().height : 0) + 16;
+  };
+  window.setTimeout(() => {
+    try {
+      window.scrollTo({ top: Math.max(0, docTop() - navOffset()), behavior: 'smooth' });
+      window.setTimeout(() => {
+        try {
+          const delta = docTop() - navOffset() - window.scrollY;
+          if (Math.abs(delta) > 8) {
+            window.scrollTo({ top: Math.max(0, window.scrollY + delta), behavior: 'smooth' });
+          }
+        } catch (error) {
+          /* ignore */
+        }
+      }, 850);
+    } catch (error) {
+      /* environment without smooth scrolling */
+    }
+  }, 60);
+}
+
 function buildShareLink(code) {
   const rawPath = window.location.pathname.endsWith('/')
     ? window.location.pathname
@@ -39,6 +73,8 @@ export default function EncodeSection({ open, onOpen }) {
   const [burst, setBurst] = useState([]);
   const canvasRef = useRef(null);
   const burstTimer = useRef(null);
+  const inputRef = useRef(null);
+  const resultRef = useRef(null);
 
   const durationMs = useMemo(() => {
     const valid = validateExpiration(hours, minutes);
@@ -221,16 +257,26 @@ export default function EncodeSection({ open, onOpen }) {
     setMinutes(String(value));
   }, [hours, minutes, toast]);
 
+  const encodeAndScrollDown = useCallback(async () => {
+    await handleEncode();
+    scrollToElTop(resultRef.current);
+  }, [handleEncode]);
+
+  const encodeAndScrollUp = useCallback(async () => {
+    await handleEncode();
+    scrollToElTop(inputRef.current);
+  }, [handleEncode]);
+
   useEffect(() => {
     const onKey = (event) => {
       if ((event.ctrlKey || event.metaKey) && event.key === 'Enter' && !event.shiftKey) {
         event.preventDefault();
-        handleEncode();
+        encodeAndScrollDown();
       }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [handleEncode]);
+  }, [encodeAndScrollDown]);
 
   useEffect(() => {
     if (!showQr || !result || !canvasRef.current) return undefined;
@@ -314,6 +360,13 @@ export default function EncodeSection({ open, onOpen }) {
               value={text}
               maxLength={MAX_TEXT_LENGTH + 500}
               rows={6}
+              ref={inputRef}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' && !event.shiftKey && !event.ctrlKey && !event.metaKey) {
+                  event.preventDefault();
+                  encodeAndScrollDown();
+                }
+              }}
               onChange={(event) => setText(event.target.value)}
             />
 
@@ -522,18 +575,18 @@ export default function EncodeSection({ open, onOpen }) {
             <button
               type="button"
               className={`btn btn--primary btn--block btn--xl ${busy ? 'is-busy' : ''}`}
-              onClick={handleEncode}
+              onClick={encodeAndScrollUp}
               disabled={busy}
             >
               <span className="btn__label">{busy ? 'Coding…' : 'Code Message'}</span>
               <span className="btn__shine" aria-hidden="true" />
             </button>
             <p className="shortcut-hint">
-              Shortcut: <kbd>Ctrl</kbd> + <kbd>Enter</kbd>
+              Press <kbd>Enter</kbd> to code · <kbd>Shift</kbd> + <kbd>Enter</kbd> for a new line
             </p>
           </div>
 
-          <div className="glass card card--result reveal">
+          <div className="glass card card--result reveal" ref={resultRef}>
             <div className="card__head">
               <h3>Encoded Message</h3>
               {result ? (

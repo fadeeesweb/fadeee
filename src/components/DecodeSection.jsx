@@ -10,6 +10,40 @@ import Countdown from './Countdown.jsx';
 
 const delay = (ms) => new Promise((resolve) => window.setTimeout(resolve, ms));
 
+function scrollToElTop(node) {
+  if (!node) return;
+  const docTop = () => {
+    let top = 0;
+    let el = node;
+    while (el) {
+      top += el.offsetTop;
+      el = el.offsetParent;
+    }
+    return top;
+  };
+  const navOffset = () => {
+    const navbar = document.querySelector('.navbar');
+    return (navbar ? navbar.getBoundingClientRect().height : 0) + 16;
+  };
+  window.setTimeout(() => {
+    try {
+      window.scrollTo({ top: Math.max(0, docTop() - navOffset()), behavior: 'smooth' });
+      window.setTimeout(() => {
+        try {
+          const delta = docTop() - navOffset() - window.scrollY;
+          if (Math.abs(delta) > 8) {
+            window.scrollTo({ top: Math.max(0, window.scrollY + delta), behavior: 'smooth' });
+          }
+        } catch (error) {
+          /* ignore */
+        }
+      }, 850);
+    } catch (error) {
+      /* environment without smooth scrolling */
+    }
+  }, 60);
+}
+
 export default function DecodeSection({ open, onOpen }) {
   const toast = useToast();
   const now = useNow(1000);
@@ -17,6 +51,8 @@ export default function DecodeSection({ open, onOpen }) {
   const [result, setResult] = useState(null);
   const [busy, setBusy] = useState(false);
   const [copied, setCopied] = useState(false);
+  const inputRef = useRef(null);
+  const resultRef = useRef(null);
 
   const runDecode = useCallback(
     async (value) => {
@@ -129,16 +165,26 @@ export default function DecodeSection({ open, onOpen }) {
     return () => window.removeEventListener('emoji-code:load-decode', onLoad);
   }, []);
 
+  const decodeAndScrollDown = useCallback(async () => {
+    await handleDecode();
+    scrollToElTop(resultRef.current);
+  }, [handleDecode]);
+
+  const decodeAndScrollUp = useCallback(async () => {
+    await handleDecode();
+    scrollToElTop(inputRef.current);
+  }, [handleDecode]);
+
   useEffect(() => {
     const onKey = (event) => {
       if ((event.ctrlKey || event.metaKey) && event.key === 'Enter' && event.shiftKey) {
         event.preventDefault();
-        handleDecode();
+        decodeAndScrollDown();
       }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [handleDecode]);
+  }, [decodeAndScrollDown]);
 
   const isExpiredNow = Boolean(result && result.ok && result.expiry && now > result.expiry);
   const expired = Boolean(result && result.ok && (result.expired || isExpiredNow));
@@ -189,6 +235,13 @@ export default function DecodeSection({ open, onOpen }) {
               placeholder="Paste emoji code here..."
               value={code}
               rows={7}
+              ref={inputRef}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' && !event.shiftKey && !event.ctrlKey && !event.metaKey) {
+                  event.preventDefault();
+                  decodeAndScrollDown();
+                }
+              }}
               onChange={(event) => setCode(event.target.value)}
             />
 
@@ -206,18 +259,19 @@ export default function DecodeSection({ open, onOpen }) {
             <button
               type="button"
               className={`btn btn--primary btn--block btn--xl ${busy ? 'is-busy' : ''}`}
-              onClick={handleDecode}
+              onClick={decodeAndScrollUp}
               disabled={busy}
             >
               <span className="btn__label">{busy ? 'Decoding…' : 'Decode Message'}</span>
               <span className="btn__shine" aria-hidden="true" />
             </button>
             <p className="shortcut-hint">
-              Shortcut: <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Enter</kbd> · One button detects both formats
+              Press <kbd>Enter</kbd> to decode · <kbd>Shift</kbd> + <kbd>Enter</kbd> for a new line · One
+              button detects both formats
             </p>
           </div>
 
-          <div className="glass card card--result reveal">
+          <div className="glass card card--result reveal" ref={resultRef}>
             <div className="card__head">
               <h3>Decoded Message</h3>
               {result && result.ok ? (
