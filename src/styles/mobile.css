@@ -32,7 +32,7 @@
   }
 
   .spide-deco {
-    width: clamp(150px, 42vw, 210px);
+    width: clamp(160px, 46vw, 230px);
     opacity: 0.65;
   }
 
