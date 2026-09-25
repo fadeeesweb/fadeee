@@ -53,8 +53,10 @@
 }
 
 .navbar__title {
-  font-size: 1.1rem;
-  font-weight: 700;
+  font-family: 'Anton', var(--font);
+  font-size: 1.35rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
   background-image: var(--rgb-gradient);
   background-size: 200% 100%;
   background-position: 0% 50%;
