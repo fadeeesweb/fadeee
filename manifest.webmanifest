@@ -1,0 +1,19 @@
+{
+  "name": "Emoji Code",
+  "short_name": "Emoji Code",
+  "description": "Turn ordinary messages into extraordinary emoji codes. Fully local, no server, 24h auto-expiry.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#050505",
+  "theme_color": "#050505",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
